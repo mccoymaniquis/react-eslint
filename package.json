@@ -35,5 +35,8 @@
     "ignoredBuiltDependencies": [
       "esbuild"
     ]
+  },
+  "lint-staged": {
+    "*": "pnpm lint"
   }
 }
