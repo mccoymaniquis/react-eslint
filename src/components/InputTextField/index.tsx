@@ -57,6 +57,7 @@ export const InputTextField: React.FC<InputTextFieldProps> = ({
                 placeholder={placeholder}
                 disabled={disabled}
                 className="w-full pr-10"
+                autoComplete="false"
               />
               {isPassword && (
                 <Button

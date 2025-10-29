@@ -1,23 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import { Layout } from "@/components/Layout";
 
 export default function Home() {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-3xl font-bold mb-4">Home Page (Private)</h1>
-      <button
-        type="button"
-        onClick={handleLogout}
-        className="px-4 py-2 bg-red-500 text-white rounded"
-      >
-        Logout
-      </button>
-    </div>
+    <Layout>
+      <span className="text-3xl font-bold mb-2">Welcome Home</span>
+      <p className="text-muted-foreground">
+        This is your private dashboard.
+      </p>
+
+      <div className="mt-4">
+        {/* Your page-specific content here */}
+        <p>This is the main content area.</p>
+        <p>Feel free to customize it as needed.</p>
+
+      </div>
+    </Layout>
   );
 }

@@ -1,12 +1,16 @@
-/* eslint-disable unicorn/filename-case */
+"use client";
+
+import { Button } from "@/components/ui/button";
+
 function SubmitButton() {
   return (
-    <button
+    <Button
       type="submit"
-      className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+      variant="blue"
+      className="w-full "
     >
-      Sign In
-    </button>
+      Login
+    </Button>
   );
 }
 

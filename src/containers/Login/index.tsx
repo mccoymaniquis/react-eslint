@@ -3,31 +3,27 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
+import type { LoginFormValues } from "@/types/login";
+
 import {
   Form,
 } from "@/components/ui/form";
+import { DEFAULT_LOGIN } from "@/constants/login";
+import { loginSchema } from "@/validations/login";
 
+import ForgotPassword from "./ForgotPassword";
 import PasswordField from "./PasswordField";
+import SubmitButton from "./SubmitButton";
 import UsernameField from "./UserNameField";
-
-// ✅ Validation schema
-const loginSchema = z.object({
-  userName: z.string().min(1, "Username is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function Login() {
   const [error, setError] = useState("");
 
-  const form = useForm<LoginFormValues>({
+  const methods = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     mode: "onBlur",
-    defaultValues: { userName: "", password: "" },
+    defaultValues: DEFAULT_LOGIN,
   });
 
   const onSubmit = (data: LoginFormValues) => {
@@ -46,10 +42,10 @@ export default function Login() {
   return (
     <div className="flex justify-center items-center h-full">
       <div className="w-full max-w-md bg-white border border-gray-200 rounded-xl shadow-lg p-8">
-        <h1 className="text-2xl sm:text-3xl font-semibold">HRIS - LOGIN</h1>
-        <div>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <h1 className="text-2xl sm:text-3xl font-semibold text-center">HRIS - LOGIN</h1>
+        <div className="pt-2">
+          <Form {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4">
               <UsernameField />
               <PasswordField />
 
@@ -57,18 +53,9 @@ export default function Login() {
                 <p className="text-red-600 text-center text-sm">{error}</p>
               )}
 
-              <div className="flex justify-end">
-                <a
-                  href="/forgot-password"
-                  className="text-sm text-blue-500 hover:underline"
-                >
-                  Forgot Password?
-                </a>
-              </div>
+              <ForgotPassword />
 
-              <Button type="submit" className="w-full text-black">
-                Sign In
-              </Button>
+              <SubmitButton />
             </form>
           </Form>
         </div>
