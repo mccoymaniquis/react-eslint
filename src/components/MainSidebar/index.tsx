@@ -1,11 +1,12 @@
 "use client";
 
-import { Home, LogOut, Menu, Settings } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { NAV_ITEMS } from "@/constants/navItems";
 import { cn } from "@/lib/utils";
 
 type MainSidebarProps = {
@@ -17,11 +18,6 @@ export function MainSidebar({ isCollapsed, onToggle }: MainSidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-
-  const navItems = [
-    { label: "Home", icon: Home, path: "/home" },
-    { label: "Settings", icon: Settings, path: "/settings" },
-  ];
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -69,7 +65,7 @@ export function MainSidebar({ isCollapsed, onToggle }: MainSidebarProps) {
           {/* Navigation */}
           <div className="flex-1 overflow-y-auto px-2 py-4">
             <nav className="flex flex-col gap-1">
-              {navItems.map(({ label, icon: Icon, path }) => {
+              {NAV_ITEMS.map(({ label, icon: Icon, path }) => {
                 const active = location.pathname === path;
                 return (
                   <Tooltip key={path}>
