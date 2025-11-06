@@ -2,8 +2,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import PrivateRoute from "@/components/PrivateRoute";
 import PublicRoute from "@/components/PublicRoute";
+import Dashboard from "@/containers/Dashboard";
+import EmployeeDetails from "@/containers/EmployeeDetails";
+import EmploymentDetails from "@/containers/EmploymentDetails";
 import ForgotPassword from "@/containers/ForgotPassword";
-import Home from "@/containers/Home";
 import Login from "@/containers/Login";
 
 export default function AppRoutes() {
@@ -29,14 +31,29 @@ export default function AppRoutes() {
 
       {/* Private route */}
       <Route
-        path="/home"
+        path="/dashboard"
         element={(
           <PrivateRoute>
-            <Home />
+            <Dashboard />
           </PrivateRoute>
         )}
       />
-
+      <Route
+        path="/employee-management/employee-details"
+        element={(
+          <PrivateRoute>
+            <EmployeeDetails />
+          </PrivateRoute>
+        )}
+      />
+      <Route
+        path="/employee-management/employment-details"
+        element={(
+          <PrivateRoute>
+            <EmploymentDetails />
+          </PrivateRoute>
+        )}
+      />
       {/* Redirect root "/" to /login */}
       <Route path="/" element={<Navigate to="/login" replace />} />
 

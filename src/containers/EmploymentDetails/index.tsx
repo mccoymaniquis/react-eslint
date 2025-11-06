@@ -1,9 +1,9 @@
 import { Layout } from "@/components/Layout";
 
-export default function Home() {
+export default function EmploymentDetails() {
   return (
     <Layout>
-      <span className="text-3xl font-bold mb-2">Welcome Home</span>
+      <span className="text-3xl font-bold mb-2">Welcome Employment Details</span>
       <p className="text-muted-foreground">
         This is your private dashboard.
       </p>

@@ -1,8 +1,10 @@
 "use client";
 
-import { LogOut, Menu } from "lucide-react";
+import { ChevronDown, ChevronRight, LogOut, Menu } from "lucide-react";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import type { NavItem } from "@/types/nav";
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -19,6 +21,11 @@ export function MainSidebar({ isCollapsed, onToggle }: MainSidebarProps) {
   const location = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
+  // ✅ All submenus open by default
+  const [openGroups, setOpenGroups] = useState<string[]>(
+    NAV_ITEMS.filter(item => item.sub).map(item => item.label),
+  );
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
@@ -31,6 +38,94 @@ export function MainSidebar({ isCollapsed, onToggle }: MainSidebarProps) {
     else {
       onToggle();
     }
+  };
+
+  // ✅ Allow multiple open groups
+  const handleGroupToggle = (label: string) => {
+    setOpenGroups(prev =>
+      prev.includes(label)
+        ? prev.filter(g => g !== label)
+        : [...prev, label],
+    );
+  };
+
+  const renderNavItem = (item: NavItem) => {
+    const active = location.pathname === item.path;
+    const isGroupOpen = openGroups.includes(item.label);
+
+    return (
+      <div key={item.path}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant={active ? "secondary" : "ghost"}
+              className={cn(
+                "w-full justify-start font-medium transition-all duration-300",
+                active && "bg-muted text-primary",
+                isCollapsed && "justify-center px-0",
+              )}
+              onClick={() => {
+                if (item.sub && !isCollapsed) {
+                  handleGroupToggle(item.label);
+                }
+                else {
+                  navigate(item.path);
+                  setIsMobileOpen(false);
+                }
+              }}
+            >
+              <item.icon className="h-5 w-5" />
+              {!isCollapsed && (
+                <span className="ml-2 flex-1 flex items-center justify-between">
+                  {item.label}
+                  {item.sub && (
+                    isGroupOpen
+                      ? (
+                          <ChevronDown className="h-4 w-4" />
+                        )
+                      : (
+                          <ChevronRight className="h-4 w-4" />
+                        )
+                  )}
+                </span>
+              )}
+            </Button>
+          </TooltipTrigger>
+          {isCollapsed && <TooltipContent side="right">{item.label}</TooltipContent>}
+        </Tooltip>
+
+        {/* Render child links */}
+        {!isCollapsed && (
+          <div
+            className={cn(
+              "ml-8 mt-1 flex flex-col gap-1 overflow-hidden transition-all duration-300 ease-in-out",
+              isGroupOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0",
+            )}
+          >
+            {item.sub?.map((child) => {
+              const childActive = location.pathname === child.path;
+              return (
+                <Button
+                  key={child.path}
+                  variant={childActive ? "secondary" : "ghost"}
+                  className={cn(
+                    "justify-start text-sm font-normal",
+                    childActive && "bg-muted text-primary",
+                  )}
+                  onClick={() => {
+                    navigate(child.path);
+                    setIsMobileOpen(false);
+                  }}
+                >
+                  <child.icon className="h-4 w-4 mr-2" />
+                  {child.label}
+                </Button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -65,31 +160,7 @@ export function MainSidebar({ isCollapsed, onToggle }: MainSidebarProps) {
           {/* Navigation */}
           <div className="flex-1 overflow-y-auto px-2 py-4">
             <nav className="flex flex-col gap-1">
-              {NAV_ITEMS.map(({ label, icon: Icon, path }) => {
-                const active = location.pathname === path;
-                return (
-                  <Tooltip key={path}>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant={active ? "secondary" : "ghost"}
-                        className={cn(
-                          "justify-start w-full font-medium",
-                          active && "bg-muted text-primary",
-                          isCollapsed && "justify-center px-0",
-                        )}
-                        onClick={() => {
-                          navigate(path);
-                          setIsMobileOpen(false);
-                        }}
-                      >
-                        <Icon className="h-5 w-5" />
-                        {!isCollapsed && <span className="ml-2">{label}</span>}
-                      </Button>
-                    </TooltipTrigger>
-                    {isCollapsed && <TooltipContent side="right">{label}</TooltipContent>}
-                  </Tooltip>
-                );
-              })}
+              {NAV_ITEMS.map(renderNavItem)}
             </nav>
           </div>
 

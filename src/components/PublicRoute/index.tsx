@@ -7,9 +7,9 @@ type PublicRouteProps = {
 export default function PublicRoute({ children }: PublicRouteProps) {
   const token = localStorage.getItem("token");
 
-  // ✅ If user already logged in, redirect to home
+  // ✅ If user already logged in, redirect to dashboard
   if (token) {
-    return <Navigate to="/home" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return <>{children}</>;

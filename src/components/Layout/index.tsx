@@ -28,7 +28,7 @@ export function Layout({ children }: LayoutProps) {
       >
         <main className="flex flex-1 flex-col p-4 pt-16 md:pt-4">
           <section className="flex flex-col justify-start items-start h-full">
-            <div className="max-w-6xl w-full">{children}</div>
+            <div className="w-full px-4">{children}</div>
           </section>
         </main>
 

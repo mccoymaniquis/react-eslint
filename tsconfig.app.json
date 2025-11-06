@@ -17,7 +17,7 @@
       "@/*": ["./src/*"]
     },
 
-    "types": ["react", "react-dom"], // ensures JSX.Element, React types available
+    "types": ["react", "react-dom", "node"], // ensures JSX.Element, React types available
     "allowImportingTsExtensions": true,
 
     /* Linting */

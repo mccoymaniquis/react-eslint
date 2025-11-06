@@ -3,9 +3,12 @@ import { createRoot } from "react-dom/client";
 
 import "./index.css";
 import App from "./app.tsx";
+import ReactQueryProvider from "./services/ReactQueryProvider";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <ReactQueryProvider>
+      <App />
+    </ReactQueryProvider>
   </StrictMode>,
 );
